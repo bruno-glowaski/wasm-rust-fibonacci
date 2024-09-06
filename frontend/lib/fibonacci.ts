@@ -1,5 +1,3 @@
-import { Flow } from "@/types/flow";
-
 const FIRST_VALUES = [0, 1, 1] as readonly number[];
 
 export function fibonacci(length: number): number[] {
