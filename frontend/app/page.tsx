@@ -22,10 +22,7 @@ export default function Home() {
       parseInt(formData.get("length") as string ?? "0"),
       MAX_LENGTH,
     );
-    const memo = {};
-    for (let i = 0; i < length; i++) {
-      setItems((items) => [...items, fibonacci(i, memo)]);
-    }
+    setItems(fibonacci(length));
   };
 
   return (

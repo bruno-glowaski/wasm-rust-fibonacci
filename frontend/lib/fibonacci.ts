@@ -1,20 +1,20 @@
-export function fibonacciNaive(index: number): number {
-  if (index <= 0) return 0;
-  if (index <= 2) return 1;
-  return fibonacciNaive(index - 1) + fibonacciNaive(index - 2);
-}
+import { Flow } from "@/types/flow";
 
-export function fibonacciMemoised(
-  index: number,
-  memo: Record<number, number> = {},
-): number {
-  if (memo[index] != null) return memo[index];
-  if (index === 0) return 0;
-  if (index < 3) return 1;
-  const r = fibonacciMemoised(index - 1, memo) +
-    fibonacciMemoised(index - 2, memo);
-  memo[index] = r;
-  return r;
-}
+const FIRST_VALUES = [0, 1, 1] as readonly number[];
 
-export const fibonacci = fibonacciMemoised;
+export function fibonacci(length: number): number[] {
+  if (length < 0) {
+    throw new RangeError("cannot produce a sequence with negative length");
+  }
+
+  if (length <= FIRST_VALUES.length) {
+    return FIRST_VALUES.slice(0, length);
+  }
+
+  const result = [...FIRST_VALUES];
+  result.length = length;
+  for (let i = 3; i < length; i++) {
+    result[i] = result[i - 1] + result[i - 2];
+  }
+  return result;
+}
