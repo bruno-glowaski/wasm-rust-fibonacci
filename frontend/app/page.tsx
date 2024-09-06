@@ -44,9 +44,9 @@ export default function Home() {
               ),
             )
             : (
-              <span className="flex-1 text-white text-opacity-50 h-16 flex justify-center items-center">
+              <figcaption className="flex-1 text-white text-opacity-50 h-16 flex justify-center items-center">
                 Generate a sequence first...
-              </span>
+              </figcaption>
             )}
         </figure>
         <form
