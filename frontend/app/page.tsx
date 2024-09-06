@@ -5,13 +5,13 @@ import { clamp } from "@/lib/utils/math";
 import { Transition } from "@headlessui/react";
 import Image from "next/image";
 import { FormEvent, useEffect, useState } from "react";
+import SequenceItem from "./SequenceItem";
 
 const MIN_LENGTH = 0;
 const MAX_LENGTH = 1300;
 
 export default function Home() {
   const [items, setItems] = useState<number[]>([]);
-  const [visibleItemCount, setVisibleItemCount] = useState(0);
 
   const generate = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -28,12 +28,6 @@ export default function Home() {
     }
   };
 
-  const showSequenceItem = (itemIndex: number) => itemIndex < visibleItemCount;
-
-  useEffect(() => {
-    setVisibleItemCount(items.length);
-  }, [items]);
-
   return (
     <>
       <h1 className="text-4xl text-center">Fibonacci Generator</h1>
@@ -41,21 +35,7 @@ export default function Home() {
         <figure className="border border-slate-700 rounded p-8 flex flex-row flex-wrap gap-4">
           {items.length > 0
             ? items.map(
-              (value, i) => (
-                <Transition
-                  key={i}
-                  show={showSequenceItem(i)}
-                  enter="transition-opacity duration-300"
-                  enterFrom="opacity-0"
-                  enterTo="opacity-100"
-                  leave="transition-opacity duration-300"
-                  leaveFrom="opacity-100"
-                  leaveTo="opacity-0"
-                  className="flex-none border border-sky-300 rounded-sm w-64 h-64 bg-sky-600 flex justify-center items-center"
-                >
-                  <span>{value}</span>
-                </Transition>
-              ),
+              (value, i) => <SequenceItem key={i} value={value} />,
             )
             : (
               <figcaption className="flex-1 text-white text-opacity-50 h-16 flex justify-center items-center">
