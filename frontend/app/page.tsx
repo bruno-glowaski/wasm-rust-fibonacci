@@ -1,9 +1,13 @@
 "use client";
 
 import { fibonacci } from "@/lib/fibonacci";
+import { clamp } from "@/lib/utils/math";
 import { Transition } from "@headlessui/react";
 import Image from "next/image";
 import { FormEvent, useEffect, useState } from "react";
+
+const MIN_LENGTH = 0;
+const MAX_LENGTH = 1300;
 
 export default function Home() {
   const [items, setItems] = useState<number[]>([]);
@@ -13,7 +17,11 @@ export default function Home() {
     e.preventDefault();
     setItems([]);
     const formData = new FormData(e.currentTarget);
-    const length = parseInt(formData.get("length") as string ?? "0");
+    const length = clamp(
+      MIN_LENGTH,
+      parseInt(formData.get("length") as string ?? "0"),
+      MAX_LENGTH,
+    );
     const memo = {};
     for (let i = 0; i < length; i++) {
       setItems((items) => [...items, fibonacci(i, memo)]);
