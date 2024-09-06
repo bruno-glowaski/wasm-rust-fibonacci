@@ -1,5 +1,6 @@
 "use client";
 
+import { fibonacci } from "@/lib/fibonacci";
 import { Transition } from "@headlessui/react";
 import Image from "next/image";
 import { FormEvent, useEffect, useState } from "react";
@@ -10,8 +11,13 @@ export default function Home() {
 
   const generate = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const item = Object.fromEntries(new FormData(e.currentTarget).entries());
-    setItems([...items, parseInt(item.length as string ?? "0")]);
+    setItems([]);
+    const formData = new FormData(e.currentTarget);
+    const length = parseInt(formData.get("length") as string ?? "0");
+    const memo = {};
+    for (let i = 0; i < length; i++) {
+      setItems((items) => [...items, fibonacci(i, memo)]);
+    }
   };
 
   const showSequenceItem = (itemIndex: number) => itemIndex < visibleItemCount;
