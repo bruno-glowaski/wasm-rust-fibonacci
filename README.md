@@ -14,7 +14,7 @@ enhancement with a SSG framework.
       WASM;
 - [x] As a developer, I want to be able to compare the benchmarks between
       JavaScript and WASM;
-- [ ] As an user without JS enabled, I want to see an error message.
+- [x] As an user without JS enabled, I want to see an error message.
 
 ## Dependencies
 
