@@ -1,15 +1,24 @@
 "use client";
 
+import { Transition } from "@headlessui/react";
 import Image from "next/image";
-import { FormEvent } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 export default function Home() {
-  const items = Array.from({ length: 0 }, () => 0);
+  const [items, setItems] = useState<number[]>([]);
+  const [visibleItemCount, setVisibleItemCount] = useState(0);
 
   const generate = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(Object.fromEntries(new FormData(e.currentTarget).entries()));
+    const item = Object.fromEntries(new FormData(e.currentTarget).entries());
+    setItems([...items, parseInt(item.length as string ?? "0")]);
   };
+
+  const showSequenceItem = (itemIndex: number) => itemIndex < visibleItemCount;
+
+  useEffect(() => {
+    setVisibleItemCount(items.length);
+  }, [items]);
 
   return (
     <>
@@ -18,10 +27,20 @@ export default function Home() {
         <figure className="border border-slate-700 rounded p-8 flex flex-row flex-wrap gap-4">
           {items.length > 0
             ? items.map(
-              (i) => (
-                <div className="flex-none border border-sky-300 rounded-sm w-16 h-16 bg-sky-600 flex justify-center items-center">
-                  <span>{i}</span>
-                </div>
+              (value, i) => (
+                <Transition
+                  key={i}
+                  show={showSequenceItem(i)}
+                  enter="transition-opacity duration-300"
+                  enterFrom="opacity-0"
+                  enterTo="opacity-100"
+                  leave="transition-opacity duration-300"
+                  leaveFrom="opacity-100"
+                  leaveTo="opacity-0"
+                  className="flex-none border border-sky-300 rounded-sm w-16 h-16 bg-sky-600 flex justify-center items-center"
+                >
+                  <span>{value}</span>
+                </Transition>
               ),
             )
             : (
