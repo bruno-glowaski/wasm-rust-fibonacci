@@ -30,7 +30,8 @@ export default function Home() {
       MIN_LENGTH,
       parseInt(formData.get("length") as string ?? "0"),
     );
-    start({ length });
+    const method = formData.get("method");
+    start({ length, method });
   };
 
   const cancelTask = () => {
@@ -53,6 +54,16 @@ export default function Home() {
               min="1"
               type="number"
             />
+          </label>
+          <label className="flex flex-col gap-1">
+            <span className="text-xs">Method:</span>
+            <select
+              className="border border-slate-800 rounded-md p-2 bg-slate-50 text-slate-900"
+              name="method"
+            >
+              <option value="js">JavaScript</option>
+              <option value="rs">Rust</option>
+            </select>
           </label>
           <button
             disabled={status === "working"}

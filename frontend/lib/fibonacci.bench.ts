@@ -1,11 +1,15 @@
 import { benchmarkSuite } from "jest-bench";
 
-import { fibonacci } from "./fibonacci";
+import { fibonacci as fibonacciJs } from "./fibonacci";
+import { fibonacci as fibonacciRs } from "fibonacci-rust";
 
 function createSuiteSet(itemCount: number): Record<string, () => void> {
   return {
     [`JavaScript (${itemCount}) items`]() {
-      fibonacci(itemCount);
+      fibonacciJs(itemCount);
+    },
+    [`Rust (${itemCount}) items`]() {
+      fibonacciRs(itemCount);
     },
   };
 }
@@ -13,4 +17,5 @@ function createSuiteSet(itemCount: number): Record<string, () => void> {
 benchmarkSuite("fibonacci strategies", {
   ...createSuiteSet(1000),
   ...createSuiteSet(10000),
+  ...createSuiteSet(100000),
 });

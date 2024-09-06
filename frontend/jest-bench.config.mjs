@@ -10,7 +10,9 @@ const createJestConfig = nextJest({
 const config = {
   // Add more setup options before each test is run
   // setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
-
+  moduleNameMapper: {
+    "fibonacci-rust": "<rootDir>/../rust/pkg_node",
+  },
   testEnvironment: "jest-bench/environment",
   testEnvironmentOptions: {
     "testEnvironment": "jest-environment-node",
