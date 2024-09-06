@@ -5,9 +5,9 @@ enhancement with a SSG framework.
 
 ## Features
 
-- [ ] As an average user, I want to be able to generate a sequence of Fibonacci
+- [x] As an average user, I want to be able to generate a sequence of Fibonacci
       numbers of any size;
-- [ ] As a developer, I want to be able to benchmark the algorithm;
+- [x] As a developer, I want to be able to benchmark the algorithm;
 - [ ] As an average user, I want to be able to cancel the generation midway
       through;
 - [ ] As an average user, I want to be able to choose between JavaScript and
