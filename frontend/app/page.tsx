@@ -43,7 +43,7 @@ export default function Home() {
                   leave="transition-opacity duration-300"
                   leaveFrom="opacity-100"
                   leaveTo="opacity-0"
-                  className="flex-none border border-sky-300 rounded-sm w-16 h-16 bg-sky-600 flex justify-center items-center"
+                  className="flex-none border border-sky-300 rounded-sm w-64 h-64 bg-sky-600 flex justify-center items-center"
                 >
                   <span>{value}</span>
                 </Transition>
