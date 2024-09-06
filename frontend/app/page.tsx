@@ -1,28 +1,37 @@
 "use client";
 
-import { fibonacci } from "@/lib/fibonacci";
 import { clamp } from "@/lib/utils/math";
-import { Transition } from "@headlessui/react";
-import Image from "next/image";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import SequenceItem from "./SequenceItem";
+import { useWorker } from "@/lib/hooks/useWorker";
+import { WorkerConfig } from "@/types/workers";
 
 const MIN_LENGTH = 0;
-const MAX_LENGTH = 1300;
 
 export default function Home() {
-  const [items, setItems] = useState<number[]>([]);
+  const { status, data, error, start, cancel } = useWorker<
+    { length: number },
+    number[]
+  >(
+    new WorkerConfig(
+      new URL("../workers/fibonacci.worker.ts", import.meta.url),
+      { name: "fibonacci" },
+    ),
+  );
 
   const generate = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setItems([]);
+    if (status === "working") return;
     const formData = new FormData(e.currentTarget);
-    const length = clamp(
+    const length = Math.max(
       MIN_LENGTH,
       parseInt(formData.get("length") as string ?? "0"),
-      MAX_LENGTH,
     );
-    setItems(fibonacci(length));
+    start({ length });
+  };
+
+  const cancelTask = () => {
+    (cancel!)();
   };
 
   return (
@@ -30,15 +39,29 @@ export default function Home() {
       <h1 className="text-4xl text-center">Fibonacci Generator</h1>
       <main className="flex flex-col items-stretch gap-8">
         <figure className="border border-slate-700 rounded p-8 flex flex-row flex-wrap gap-4">
-          {items.length > 0
-            ? items.map(
-              (value, i) => <SequenceItem key={i} index={i} value={value} />,
-            )
-            : (
-              <figcaption className="flex-1 text-white text-opacity-50 h-16 flex justify-center items-center">
-                Generate a sequence first...
-              </figcaption>
-            )}
+          {status === "idle" && (
+            <figcaption className="flex-1 text-white text-opacity-50 h-16 flex justify-center items-center">
+              Generate a sequence first...
+            </figcaption>
+          )}
+          {status === "working" && (
+            <figcaption className="flex-1 text-white text-opacity-50 h-16 flex justify-center items-center">
+              In progress...
+            </figcaption>
+          )}
+          {status === "success" && data.map(
+            (value, i) => <SequenceItem key={i} index={i} value={value} />,
+          )}
+          {status === "error" && (
+            <figcaption className="flex-1 text-white text-opacity-50 h-16 flex justify-center items-center">
+              An error has occurred: {`${error}`}
+            </figcaption>
+          )}
+          {status === "cancelled" && (
+            <figcaption className="flex-1 text-white text-opacity-50 h-16 flex justify-center items-center">
+              Task cancelled...
+            </figcaption>
+          )}
         </figure>
         <form
           className="border border-slate-700 rounded p-8 flex flex-col gap-4"
@@ -52,8 +75,19 @@ export default function Home() {
               type="number"
             />
           </label>
-          <button className="border border-green-500 rounded p-2 bg-green-800 hover:bg-green-700 active:bg-green-600">
+          <button
+            disabled={status === "working"}
+            className="border border-green-500 rounded p-2 bg-green-800 hover:bg-green-700 active:bg-green-600 disabled:bg-green-950 disabled:border-green-700"
+          >
             Generate
+          </button>
+          <button
+            disabled={status !== "working"}
+            type="button"
+            className="border border-red-500 rounded p-2 bg-red-800 hover:bg-red-700 active:bg-red-600 disabled:bg-red-950 disabled:border-red-700"
+            onClick={cancelTask}
+          >
+            Cancel
           </button>
         </form>
       </main>

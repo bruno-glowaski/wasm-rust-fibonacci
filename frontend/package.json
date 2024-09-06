@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "benchmark": "jest --projects jest-bench.config.mjs --watch"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
