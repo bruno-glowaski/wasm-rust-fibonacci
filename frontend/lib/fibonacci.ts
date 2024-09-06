@@ -1,6 +1,6 @@
-const FIRST_VALUES = [0, 1, 1] as readonly number[];
+const FIRST_VALUES = [0n, 1n, 1n] as readonly bigint[];
 
-export function fibonacci(length: number): number[] {
+export function fibonacci(length: number): bigint[] {
   if (length < 0) {
     throw new RangeError("cannot produce a sequence with negative length");
   }

@@ -1,17 +1,20 @@
 "use client";
 
-import { clamp } from "@/lib/utils/math";
-import { FormEvent, useState } from "react";
+import { FormEvent } from "react";
 import SequenceItem from "./SequenceItem";
 import { useWorker } from "@/lib/hooks/useWorker";
 import { WorkerConfig } from "@/types/workers";
+import {
+  FibonacciWorkerMessage,
+  FibonacciWorkerResult,
+} from "@/workers/fibonacci.worker";
 
 const MIN_LENGTH = 0;
 
 export default function Home() {
   const { status, data, error, start, cancel } = useWorker<
-    { length: number },
-    number[]
+    FibonacciWorkerMessage,
+    FibonacciWorkerResult
   >(
     new WorkerConfig(
       new URL("../workers/fibonacci.worker.ts", import.meta.url),
