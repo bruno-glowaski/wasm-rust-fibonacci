@@ -32,7 +32,7 @@ export default function Home() {
         <figure className="border border-slate-700 rounded p-8 flex flex-row flex-wrap gap-4">
           {items.length > 0
             ? items.map(
-              (value, i) => <SequenceItem key={i} value={value} />,
+              (value, i) => <SequenceItem key={i} index={i} value={value} />,
             )
             : (
               <figcaption className="flex-1 text-white text-opacity-50 h-16 flex justify-center items-center">
